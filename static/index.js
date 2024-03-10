@@ -385,6 +385,9 @@ let channelListeners = () => {
   let replyPane = document.querySelector(".replyPane");
   let replyPaneClose = document.querySelector(".replyPane span#close");
   replyPaneClose.addEventListener("click", () => {
+    let clip = document.querySelector(".channel .clip");
+    clip.classList.remove("threePane");
+    clip.classList.add("twoPane");
     replyPane.classList.add("hide");
     const url = location.pathname.split("/").slice(0, 3).join("/");
     history.pushState({}, "", url);
@@ -468,11 +471,17 @@ let getMessages = () => {
 };
 
 function closeReplyPane() {
+  let clip = document.querySelector(".channel .clip");
+  clip.classList.remove("threePane");
+  clip.classList.add("twoPane");
   let replyPane = document.querySelector(".replyPane");
   replyPane.classList.add("hide");
 }
 
 function displayReplyPane() {
+  let clip = document.querySelector(".channel .clip");
+  clip.classList.remove("twoPane");
+  clip.classList.add("threePane");
   let reply_pane = document.body.querySelector(".replyPane");
   reply_pane.classList.remove("hide");
   let a = reply_pane.querySelector("a");
