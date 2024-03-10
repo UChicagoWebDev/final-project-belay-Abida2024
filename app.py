@@ -155,6 +155,16 @@ def create_channel():
 
     return {'channel_id': channel['id'], 'name': channel['name']}, 200
 
+@app.route('/api/channels/postemoji', methods=['POST'])
+def post_emoji_to_message():
+    u, valid_key = validate_api_key(request)
+    if not valid_key:
+        return {}, 404
+    data = request.json
+    emoji = query_db('insert into emojis (emoji_id, message_id, user_id) values (?, ?, ?) returning id', 
+    [data['emoji_id'], data['message_id'], u['id']], one=True)            
+    return {'emoji': emoji['id']}, 200
+
 @app.route('/api/channels/postmessage', methods=['POST'])
 def post_message_to_channel():
     u, valid_key = validate_api_key(request)
@@ -270,6 +280,3 @@ def get_message_replies(message_id):
             )
     all_messages = list(messages_dict.values())
     return jsonify(all_messages), 200
-
-# emojis 
-

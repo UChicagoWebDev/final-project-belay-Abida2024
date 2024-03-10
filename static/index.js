@@ -19,6 +19,12 @@ let EMOJIS = {
   3: "check",
 };
 
+let EMOJIS_REVERSE = {
+  sentiment_satisfied: 1,
+  sentiment_dissatisfied: 2,
+  check: 3,
+};
+
 // Custom validation on the password reset fields
 const passwordField = document.querySelector(".profile input[name=password]");
 const repeatPasswordField = document.querySelector(
@@ -508,6 +514,8 @@ function displayReplyPane() {
       content.textContent = data["body"];
       parent_msg.appendChild(author);
       parent_msg.appendChild(content);
+      parent_msg.appendChild(addEmojiReact(1));
+      parent_msg.appendChild(addEmojiReact(2));
       toplevel.appendChild(parent_msg);
       let reply_messages = reply_pane.querySelector(".messages.replies");
       reply_messages.replaceChildren();
@@ -524,6 +532,8 @@ function displayReplyPane() {
         reply_content.textContent = reply["body"];
         reply_msg.appendChild(reply_author);
         reply_msg.appendChild(reply_content);
+        reply_msg.appendChild(addEmojiReact(1));
+        reply_msg.appendChild(addEmojiReact(2));
         return reply_messages.appendChild(reply_msg);
       });
     });
@@ -532,6 +542,19 @@ function displayReplyPane() {
 function postEmojiReaction(event) {
   event.preventDefault();
   // Add to the backend database
+  const url = "/api/channels/postemoji";
+  let data = {
+    emoji_id: EMOJIS_REVERSE[event.target.textContent],
+    message_id: event.target.parentElement.id,
+  };
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "API-KEY": localStorage.getItem("abida_belay_auth_key"),
+    },
+    body: JSON.stringify(data),
+  }).then((response) => console.log(response.status));
 }
 
 function addEmojiReact(type) {
