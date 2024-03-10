@@ -4,21 +4,32 @@ body {
   margin: 0;
 }
 
+img {
+  width: 150px;
+  height: 150px;
+}
+
 .container {
-  width: 900px;
-  height: 100%;
+  width: 700px;
+  height: 30%;
   background-color: white;
   margin: auto;
   margin-top: 20px;
+  padding: 1px;
   font-family: sans-serif;
+  border: 2px solid black;
+}
+
+.container.replyPane {
+  width: 500px;
 }
 
 button {
-  color: white;
+  color: lightblue;
   text-shadow: -1px -1px 2px black;
   font-family: sans-serif;
   background-color: white;
-  padding: 3px;
+  padding: 10px;
   border-radius: 4px;
   will-change: transform;
   transition: transform 250ms;
@@ -237,18 +248,22 @@ button:hover {
   border-right: 8px solid lightgray;
 }
 
+.replyPane,
 .channel .chat .comment_box textarea {
   display: block;
   width: 100%;
 }
 
+.replyPane,
 .channel .chat .comment_box button {
+  border: 1px solid black;
+  color: black;
   border-radius: 5px;
   padding: 10px;
-  border: none;
   margin-top: 15px;
 }
 
+.replyPane,
 .channel .chat .comment_box label {
   display: block;
   font-family: "Rowdies", cursive;
@@ -260,6 +275,7 @@ button:hover {
   grid-template-columns: 200px 1fr;
   grid-template-rows: min-content;
   grid-auto-rows: min-content;
+  overflow-x: scroll;
   overflow-y: scroll;
   height: auto;
 }
@@ -272,7 +288,7 @@ button:hover {
 }
 
 .channel message author {
-  color: #c93;
+  color: burlywood;
   font-weight: bold;
   display: block;
   padding: 5px;
@@ -304,5 +320,4 @@ button:hover {
 #close {
   float: right;
   padding: 1px 3px;
-  background: blue;
 }

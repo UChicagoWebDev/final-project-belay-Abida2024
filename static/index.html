@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <link rel="stylesheet" type="text/css" href="/static/style.css"></link>
   <!-- For the reply icon and emojis -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="splash container"> <!-- TODO: Show me only on "/" -->
@@ -119,6 +118,7 @@
     <div class="channelList">
     </div>
     <div class="container">
+      View Channel Messages
       <div class="column chat">
         <div class="messages"> 
         </div>
@@ -131,15 +131,16 @@
     </div>
     <div class="container replyPane hide">
       <span id="close">X</span>
-      Message
-      <div class="messages parent"></div>
-      Replies: 
-      <div class="messages replies"> 
-      </div>
-      <div class="comment_box">
-        <label for="comment">Respond to this message</label>
-        <textarea name="comment"></textarea>
-        <button type="submit" value="Post">Post</button>
+      <a>Click to return to channel</a>
+      <div class="column chat">
+        <div class="messages parent">Message</div>
+        View the replies: 
+        <div class="messages replies">Replies</div>
+        <div class="comment_box">
+          <label for="comment">Respond to this message</label>
+          <textarea name="comment"></textarea>
+          <button type="submit" value="Post">Post</button>
+        </div>
       </div>
     </div> 
   </div> <!-- end .clip -->

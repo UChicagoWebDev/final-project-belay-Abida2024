@@ -13,6 +13,12 @@ let LOGIN_FAILURE = false;
 let NEXT_PAGE = "/";
 let REPLY_PANE = false;
 
+let EMOJIS = {
+  1: "sentiment_satisfied",
+  2: "sentiment_dissatisfied",
+  3: "check",
+};
+
 // Custom validation on the password reset fields
 const passwordField = document.querySelector(".profile input[name=password]");
 const repeatPasswordField = document.querySelector(
@@ -400,9 +406,7 @@ let getChannelUnread = () => {
 };
 
 let listChannels = (channels, channelClass = ".clip .channelList") => {
-  console.log(channelClass);
   let channelslist_div = document.querySelector(channelClass);
-  console.log(CURRENT_CHANNEL);
   channelslist_div.replaceChildren();
   // Insert the remaining channels
   channels.forEach((channel) => {
@@ -461,6 +465,8 @@ let getMessages = () => {
 function displayReplyPane() {
   let reply_pane = document.body.querySelector(".replyPane");
   reply_pane.classList.remove("hide");
+  let a = reply_pane.querySelector("a");
+  a.href = `/channel/${location.pathname.split("/")[2]}`;
   let message_id = location.pathname.split("/")[4];
   let url = `/api/channels/getmessagereplies/${message_id}`;
   fetch(url, {
@@ -473,8 +479,9 @@ function displayReplyPane() {
     .then((response) => response.json())
     .then((data) => {
       data = data[0];
-      let parent_msg = reply_pane.querySelector(".messages.parent");
-      parent_msg.replaceChildren();
+      let toplevel = reply_pane.querySelector(".messages.parent");
+      toplevel.replaceChildren();
+      let parent_msg = document.createElement("message");
       parent_msg.id = data["id"];
       let author = document.createElement("author");
       author.textContent = data["user_name"];
@@ -482,7 +489,7 @@ function displayReplyPane() {
       content.textContent = data["body"];
       parent_msg.appendChild(author);
       parent_msg.appendChild(content);
-      reply_pane.appendChild(parent_msg);
+      toplevel.appendChild(parent_msg);
       let reply_messages = reply_pane.querySelector(".messages.replies");
       reply_messages.replaceChildren();
       // Add the replies if they exist
@@ -493,15 +500,27 @@ function displayReplyPane() {
         let reply_msg = document.createElement("message");
         reply_msg.id = reply["reply_id"];
         let reply_author = document.createElement("author");
-        reply_author.textContent = reply["reply_name"];
+        reply_author.textContent = reply["reply_user_name"];
         let reply_content = document.createElement("content");
-        reply_content.textContent = reply["reply_body"];
+        reply_content.textContent = reply["body"];
         reply_msg.appendChild(reply_author);
         reply_msg.appendChild(reply_content);
-        console.log(reply_msg);
-        reply_messages.appendChild(reply_msg);
+        return reply_messages.appendChild(reply_msg);
       });
     });
+}
+
+function postEmojiReaction(event) {
+  event.preventDefault();
+  // Add to the backend database
+}
+
+function addEmojiReact(type) {
+  let emoji = document.createElement("span");
+  emoji.className = "material-symbols-outlined";
+  emoji.textContent = EMOJIS[type];
+  emoji.addEventListener("click", postEmojiReaction);
+  return emoji;
 }
 
 function insertMessages(messages) {
@@ -520,9 +539,9 @@ function insertMessages(messages) {
     author.textContent = message["user_name"];
     let content = document.createElement("content");
     content.textContent = message["body"];
-    let replyIcon = document.createElement("i");
-    replyIcon.className = "fas fa-cloud";
-    replyIcon.textContent = "Reply";
+    let replyIcon = document.createElement("span");
+    replyIcon.className = "material-symbols-outlined";
+    replyIcon.textContent = "quickreply";
     replyIcon.addEventListener("click", () => {
       history.pushState({}, "", `/channel/${channel_id}/reply/${msg.id}`);
       router();
@@ -531,8 +550,18 @@ function insertMessages(messages) {
     numReplies.textContent = `Replies: ${message["replies"].length}`;
     msg.appendChild(author);
     msg.appendChild(content);
-    msg.appendChild(numReplies);
     msg.appendChild(replyIcon);
+    msg.appendChild(numReplies);
+    msg.appendChild(addEmojiReact(1));
+    msg.appendChild(addEmojiReact(2));
+    // Display an image is one exists: https://stackoverflow.com/questions/4098415/use-regex-to-get-image-url-in-html-js
+    const regex = "(https?://.*.(?:png|jpg))";
+    const match = message["body"].match(regex);
+    if (match) {
+      const img = document.createElement("img");
+      img.src = match[0];
+      msg.appendChild(img);
+    }
     messages_div.appendChild(msg);
   });
 }

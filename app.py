@@ -36,11 +36,13 @@ def query_db(query, args=(), one=False):
         return rows
     return None
 
-def new_user(username, password):
+def new_user():
+    name = "Unnamed User #" + ''.join(random.choices(string.digits, k=6))
+    password = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
     api_key = ''.join(random.choices(string.ascii_lowercase + string.digits, k=40))
     u = query_db('insert into users (name, password, api_key) ' + 
         'values (?, ?, ?) returning id, name, password, api_key',
-        (username, password, api_key),
+        (name, password, api_key),
         one=True)
     return u
 
@@ -58,15 +60,13 @@ def index(channel_id=None, reply_id=None):
 def page_not_found(e):
     return app.send_static_file('404.html'), 404
 
-
 # -------------------------------- API ROUTES ----------------------------------
-@app.route('/api/signup', methods=['POST'])
+@app.route('/api/signup', methods=['GET'])
 def signup():
     # creates a new user in the database
     # store in localStorage 
     # return api key for the user 
-    data = request.json
-    u = new_user(data['username'], data['password'])
+    u = new_user()
     api_key = u['api_key']
     
     # Insert the user into the user_messages_table
@@ -141,14 +141,18 @@ def update_password():
     return {'password': resp['password']}, 200
 
 # ------------------------------------------------ CHANNEL ENDPOINTS ----------------------------------------------
-# create a channel 
-@app.route('/api/channels/new', methods=['POST'])
+@app.route('/api/channels/new', methods=['GET'])
 def create_channel():
-    u, valid_key = validate_api_key(request)
+    u, valid_key = validate_api_key(request);
     if not valid_key:
         return {}, 404
-    data = request.json
-    channel = query_db('insert into channels (name) values (?) returning id, name', [data['channel_name']], one=True)            
+    
+    name = "Unnamed Room " + ''.join(random.choices(string.digits, k=6))
+    channel = query_db('insert into channels (name) values (?) returning id, name', [name], one=True)      
+    # Set the latest read message for this channel to be 0 for all users:
+    query_db('''insert into latest_user_messages (user_id, channel_id, latest_message_seen)
+    select users.id, ?, 0 from users''', [channel['id']], one=True)
+
     return {'channel_id': channel['id'], 'name': channel['name']}, 200
 
 @app.route('/api/channels/postmessage', methods=['POST'])
