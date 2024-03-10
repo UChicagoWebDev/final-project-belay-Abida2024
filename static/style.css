@@ -1,0 +1,308 @@
+/* Global styles */
+body {
+  color: black;
+  margin: 0;
+}
+
+.container {
+  width: 900px;
+  height: 100%;
+  background-color: white;
+  margin: auto;
+  margin-top: 20px;
+  font-family: sans-serif;
+}
+
+button {
+  color: white;
+  text-shadow: -1px -1px 2px black;
+  font-family: sans-serif;
+  background-color: white;
+  padding: 3px;
+  border-radius: 4px;
+  will-change: transform;
+  transition: transform 250ms;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.loginHeader {
+  display: flex;
+  margin-left: auto;
+  z-index: 5;
+  height: 44px;
+}
+
+.loginHeader > div {
+  font-size: 18px;
+  color: white;
+  font-family: sans-serif;
+  text-decoration: none;
+  padding: 20px 30px 10px 30px;
+  border-radius: 0 0 8px 8px;
+  margin: -10px 10px 0 0;
+  will-change: transform;
+  transition: transform 250ms;
+}
+
+.loginHeader > div:hover {
+  transform: translateY(4px);
+  box-shadow: 0 4px 8px #ffffa2;
+}
+
+.loginHeader .loggedOut {
+  background-color: orange;
+  text-shadow: -1px -1px 2px black;
+}
+
+.loginHeader .loggedIn {
+  background-color: lightsalmon;
+  color: white;
+  text-shadow: 0 0 2px brown;
+  font-size: 18px;
+}
+
+.material-symbols-outlined {
+  display: inline-flex;
+  vertical-align: bottom;
+}
+
+.alignedForm {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 100%;
+}
+
+.alignedForm > * {
+  padding: 4px;
+  margin: 6px;
+}
+
+.alignedForm input:invalid {
+  border: 1px dashed lightcoral;
+  border-radius: 1px;
+}
+
+.alignedForm error {
+  color: gray;
+  display: none;
+}
+.alignedForm input:invalid ~ error {
+  display: inline;
+}
+
+.alignedForm button {
+  margin-right: auto;
+}
+
+.header {
+  display: flex;
+  background-color: white;
+  color: gray;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 8px darkslateblue;
+}
+
+.clip {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-gap: 2px;
+  overflow: hidden;
+}
+
+.clip .threePane {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-gap: 2px;
+  overflow: hidden;
+}
+
+/* Splash screen */
+.splash .splashHeader {
+  display: flex;
+}
+
+.splash .hero h2 {
+  display: block;
+  grid-column: 1/3;
+  grid-row: 1/3;
+  z-index: 3;
+  margin: auto;
+
+  font-size: 240px;
+  color: white;
+  text-shadow: 0px 0px 20px red, 0px 0px 40px darkred;
+}
+
+.splash .hero form {
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
+
+.splash .hero button {
+  margin: 20px 40px 20px 40px;
+  padding: 10px 20px 10px 20px;
+  border: 7px outset;
+  border-radius: 4px;
+  color: black;
+}
+
+.channelList > a {
+  display: block;
+  flex: 1 1 30%;
+  padding: 8px;
+  margin: 10px;
+  color: black;
+  border-color: black;
+  text-shadow: 0 1px 1px darkslateblue;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px lightskyblue;
+}
+
+.channelList > a:hover {
+  background-color: rgb(75, 101, 122);
+  border-radius: 3px;
+}
+
+.channelList a {
+  text-decoration: none;
+  will-change: transform;
+  transition: transform 250ms;
+}
+
+.channelList a:hover {
+  transform: scale(1.025);
+}
+
+.channelList a.highlight {
+  background-color: lightgreen;
+}
+
+/* Profile screen */
+.profile {
+  display: block;
+}
+
+.profile .exit {
+  margin-top: 40px;
+}
+.profile .exit.goToSplash {
+  grid-column: 2/3;
+}
+
+.profile .exit.logout {
+  grid-column: 3/4;
+  background-color: lightcoral;
+}
+
+/* Login screen */
+.login {
+  display: block;
+}
+
+.login .failed {
+  margin-top: 4em;
+  display: flex;
+}
+
+.login .failed .message {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 8px;
+  color: white;
+  border-radius: 5px;
+  background-color: lightcoral;
+  box-shadow: 0 0 5px 3px lightcoral;
+}
+
+.login .failed button {
+  margin-left: 20px;
+  margin-right: auto;
+  padding: 12px;
+}
+
+/* channel screen */
+.channel .chat {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  height: 100%;
+}
+
+.channel .chat .comment_box {
+  margin-right: 20px;
+  padding-right: 10px;
+  height: 100%;
+  border-right: 8px solid lightgray;
+}
+
+.channel .chat .comment_box textarea {
+  display: block;
+  width: 100%;
+}
+
+.channel .chat .comment_box button {
+  border-radius: 5px;
+  padding: 10px;
+  border: none;
+  margin-top: 15px;
+}
+
+.channel .chat .comment_box label {
+  display: block;
+  font-family: "Rowdies", cursive;
+  margin-bottom: 10px;
+}
+
+.channel .messages {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: min-content;
+  grid-auto-rows: min-content;
+  overflow-y: scroll;
+  height: auto;
+}
+
+.chat message {
+  display: grid;
+  grid-column: 1/3;
+  grid-template-columns: 200px 1fr;
+  border-bottom: 1px solid lightgray;
+}
+
+.channel message author {
+  color: #c93;
+  font-weight: bold;
+  display: block;
+  padding: 5px;
+  grid-column: 1/2;
+}
+
+.channel message content {
+  display: block;
+  padding: 5px;
+  grid-column: 2/3;
+}
+
+/* 404 page */
+.notFound h1 {
+  margin: 20px 20px -300px 20px;
+  font-size: 500px;
+  color: #f0c0c0;
+}
+
+.notFound .message {
+  margin-left: 100px;
+  text-shadow: 0 0 6px white;
+}
+
+.hide {
+  display: none;
+}
+
+#close {
+  float: right;
+  padding: 1px 3px;
+  background: blue;
+}
