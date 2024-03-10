@@ -88,6 +88,7 @@ let router = () => {
       displayReplyPane();
     } else {
       REPLY_PANE = false;
+      closeReplyPane();
     }
     showOnly("channel");
   } else if (path == "/logout") {
@@ -414,7 +415,11 @@ let listChannels = (channels, channelClass = ".clip .channelList") => {
     if (CURRENT_CHANNEL == channel["channel_id"]) {
       channel_div.classList.add("highlight");
     }
-    channel_div.href = `/channel/${channel["channel_id"]}`;
+    // channel_div.href = `/channel/${channel["channel_id"]}`;
+    channel_div.addEventListener("click", () => {
+      history.pushState({}, "", `/channel/${channel["channel_id"]}`);
+      router();
+    });
     channel.textContent = `${channel["channel_id"]}: `;
     let strong = document.createElement("strong");
     strong.textContent = "#" + channel["channel_name"];
@@ -461,6 +466,11 @@ let getMessages = () => {
     .then((response) => response.json())
     .then((data) => insertMessages(data));
 };
+
+function closeReplyPane() {
+  let replyPane = document.querySelector(".replyPane");
+  replyPane.classList.add("hide");
+}
 
 function displayReplyPane() {
   let reply_pane = document.body.querySelector(".replyPane");
